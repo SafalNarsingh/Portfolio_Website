@@ -1,0 +1,31 @@
+/* Add this single line at the very top */
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Space Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+/* Keep the rest of your CSS below */
+html {
+  scroll-behavior: smooth;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[#FAFAFA] text-black font-mono selection:bg-black selection:text-white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
