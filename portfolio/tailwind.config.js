@@ -2,17 +2,14 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}", // Ensures TSX files are scanned
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"Space Mono"', 'monospace'],
-        dot: ['"DotGothic16"', 'sans-serif'],
+        // This allows you to use className="font-dot" in JSX if needed
+        dot: ['Bitcount', 'monospace'],
       },
-      backgroundImage: {
-        'halftone': 'radial-gradient(circle, #000 2px, transparent 2.5px)',
-      }
     },
   },
   plugins: [],
