@@ -8,7 +8,7 @@ export default {
     extend: {
       fontFamily: {
         // This allows you to use className="font-dot" in JSX if needed
-        dot: ['Bitcount', 'monospace'],
+        dot: ['"Bitcount Prop Single"', 'monospace'],
       },
     },
   },

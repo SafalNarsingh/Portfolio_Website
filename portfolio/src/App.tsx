@@ -30,10 +30,9 @@ interface SkillData {
 
 // --- Components ---
 
-// 1. Top Right Calendar Widget
+// 1. Calendar Widget (Static Black, No Shadow)
 const CalendarWidget: React.FC = () => {
   const [dateString, setDateString] = useState<string>("");
-  const [scrolled, setScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -49,31 +48,18 @@ const CalendarWidget: React.FC = () => {
 
     updateTime();
     const timer = setInterval(updateTime, 60000);
-
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      clearInterval(timer);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => clearInterval(timer);
   }, []);
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.5 }}
-      className={`
-        fixed top-6 right-6 z-50 hidden lg:flex items-center gap-3 px-6 py-3 rounded-full transition-all duration-500
-        ${scrolled 
-          ? "bg-white/65 backdrop-blur-3xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
-          : "bg-transparent border border-transparent"
-        }
-      `}
+      className="fixed bottom-6 left-6 z-50 hidden lg:flex items-center gap-3 px-6 py-3 rounded-full bg-black/80 border border-white/10"
     >
-      <Calendar size={16} className="text-gray-500" />
-      <span className="text-sm font-bold text-gray-800 tracking-tight font-dot">{dateString}</span>
+      <Calendar size={16} className="text-white/70" />
+      <span className="text-sm font-bold text-white tracking-tight font-dot">{dateString}</span>
     </motion.div>
   );
 };
@@ -91,28 +77,25 @@ const Navbar: React.FC = () => {
   const navLinks: string[] = ["About", "Projects", "Education", "Experience"];
 
   return (
-    <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+    <div className="fixed bottom-6 left-0 right-0 lg:top-6 lg:bottom-auto z-50 flex justify-center px-4 pointer-events-none">
       <motion.nav
-        initial={{ y: -100, opacity: 0 }}
+        initial={{ y: 100, opacity: 0 }} 
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, type: "spring" }}
         className={`
           pointer-events-auto
-          flex items-center gap-6 px-8 py-3 rounded-full transition-all duration-500 ease-out font-dot
-          ${scrolled 
-            ? "bg-white/65 backdrop-blur-3xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)]" 
-            : "bg-transparent backdrop-blur-none border-transparent"
-          }
+          flex items-center gap-4 lg:gap-6 px-6 py-3 rounded-full transition-all duration-500 ease-out font-dot
+          bg-white/65 backdrop-blur-3xl backdrop-saturate-150 border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)]
+          lg:bg-transparent lg:backdrop-blur-none lg:border-transparent lg:shadow-none
+          ${scrolled ? "lg:!bg-white/65 lg:!backdrop-blur-3xl lg:!border-white/50 lg:!shadow-[0_8px_30px_rgb(0,0,0,0.04)]" : ""}
         `}
       >
-        <div className="hidden md:flex items-center gap-8 text-sm font-bold tracking-tighter">
-          
-          {/* HOME ICON LINK */}
+        <div className="flex items-center gap-4 lg:gap-8 text-xs lg:text-sm font-bold tracking-tighter">
           <a 
             href="#home" 
-            className={`flex items-center justify-center transition-all duration-300 hover:scale-110 ${scrolled ? 'opacity-80 hover:opacity-100' : 'opacity-60 hover:opacity-100'}`}
+            className="flex items-center justify-center transition-all duration-300 hover:scale-110 opacity-80 hover:opacity-100"
           >
-            <img 
+             <img 
               src="/home-agreement.png" 
               alt="Home" 
               className="w-4 h-4 object-contain" 
@@ -123,7 +106,7 @@ const Navbar: React.FC = () => {
             <a 
               key={link} 
               href={`#${link.toLowerCase()}`}
-              className={`transition-colors font-medium ${scrolled ? 'text-gray-600 hover:text-black' : 'text-gray-500 hover:text-black'}`}
+              className="transition-colors font-medium text-gray-600 hover:text-black"
             >
               {link}
             </a>
@@ -136,7 +119,7 @@ const Navbar: React.FC = () => {
 
 // 3. Section Wrapper
 const Section: React.FC<SectionProps> = ({ id, children, className = "" }) => (
-  <section id={id} className={`min-h-screen w-full px-6 py-24 max-w-7xl mx-auto flex flex-col justify-center ${className}`}>
+  <section id={id} className={`w-full px-6 py-12 lg:py-24 max-w-5xl mx-auto flex flex-col justify-center ${className}`}>
     {children}
   </section>
 );
@@ -165,13 +148,13 @@ const GlassCard: React.FC<GlassCardProps> = ({ children, className = "", hoverEf
 // 5. Infinite Marquee Component
 const SkillsMarquee: React.FC<{ skills: SkillData[] }> = ({ skills }) => {
   return (
-    <div className="w-full overflow-hidden relative py-8 mask-linear-gradient">
-      <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-[#FAFAFA] to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-[#FAFAFA] to-transparent z-10 pointer-events-none" />
+    <div className="w-full overflow-hidden relative py-4 lg:py-8 mask-linear-gradient">
+      <div className="absolute inset-y-0 left-0 w-12 lg:w-32 bg-gradient-to-r from-[#FAFAFA] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-12 lg:w-32 bg-gradient-to-l from-[#FAFAFA] to-transparent z-10 pointer-events-none" />
       
       <div className="flex w-max">
         <motion.div 
-          className="flex gap-16 md:gap-24 px-8 md:px-12"
+          className="flex gap-10 lg:gap-24 px-8 lg:px-12"
           animate={{ x: ["0%", "-100%"] }} 
           transition={{ 
             repeat: Infinity, 
@@ -181,8 +164,8 @@ const SkillsMarquee: React.FC<{ skills: SkillData[] }> = ({ skills }) => {
         >
           {[...skills, ...skills, ...skills].map((skill, i) => (
             <div key={i} className="flex items-center gap-3 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300 cursor-default">
-              <img src={skill.logo} alt={skill.name} className="w-8 h-8 md:w-10 md:h-10 object-contain" />
-              <span className="text-xl md:text-3xl font-bold tracking-tight text-black/80 font-dot whitespace-nowrap">
+              <img src={skill.logo} alt={skill.name} className="w-6 h-6 lg:w-10 lg:h-10 object-contain" />
+              <span className="text-lg lg:text-3xl font-bold tracking-tight text-black/80 font-dot whitespace-nowrap">
                 {skill.name}
               </span>
             </div>
@@ -228,79 +211,79 @@ const App: React.FC = () => {
       <CalendarWidget />
 
       {/* 1. HOME */}
-      <Section id="home" className="pt-24 lg:pt-0 min-h-[70vh]"> 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10 lg:gap-16">
+      <Section id="home" className="pt-12 lg:pt-0 min-h-auto lg:min-h-screen flex items-center"> 
+        <div className="flex flex-row items-center justify-between gap-4 md:gap-10 lg:gap-16 w-full">
           
-          <div className="flex-1 space-y-4 text-left z-10">
+          <div className="flex-1 space-y-2 md:space-y-4 text-left z-10 min-w-0">
             
-            {/* Active Now Indicator - Repositioned to Top */}
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/10 w-fit mb-2"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-green-600 font-dot">
-                Active Now
-              </span>
-            </motion.div>
-
             <motion.p 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
-              className="text-gray-400 font-dot text-xs tracking-widest pl-1"
+              className="text-gray-400 font-dot text-sm md:text-base tracking-widest pl-1"
             >
               Hi, I am
             </motion.p>
             
             <motion.h1 
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-              className="font-dot text-5xl md:text-6xl lg:text-7xl leading-none tracking-tight uppercase"
+              className="font-dot text-3xl md:text-5xl lg:text-7xl leading-[0.9] tracking-tighter uppercase [word-spacing:-0.4em]"
             >
               Safal Narshing <br /> Shrestha
             </motion.h1>
 
             <motion.div 
                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
-               className="flex flex-col gap-3 pt-1 pl-1"
+               className="flex flex-col gap-1 md:gap-2 pt-1 pl-1"
             >
-              <p className="font-dot text-lg text-gray-600">
+              <p className="font-dot text-xl md:text-2xl text-gray-600">
                 ML/AI Engineer
               </p>
               
-              {/* Location Tag */}
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 font-dot">
-                <MapPin size={12} />
+              <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-400 font-dot">
+                <MapPin size={10} className="md:w-3 md:h-3" />
                 <span>Kathmandu, Nepal</span>
               </div>
+
+              {/* ACTIVE NOW */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                transition={{ delay: 0.5 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/5 border border-green-500/10 w-fit"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-green-600 font-dot">
+                  Active Now
+                </span>
+              </motion.div>
+
             </motion.div>
 
             <motion.div 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-              className="flex flex-wrap gap-4 pt-6 pl-1"
+              className="flex flex-wrap gap-2 md:gap-4 pt-3 md:pt-6 pl-1"
             >
-              <button className="flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-full font-bold text-xs hover:scale-105 transition-transform font-dot">
-                <ArrowUpRight size={16} />
+              <button className="flex items-center gap-2 bg-black text-white px-4 py-2 md:px-6 md:py-2.5 rounded-full font-bold text-[10px] md:text-xs hover:scale-105 transition-transform font-dot">
+                <ArrowUpRight size={14} className="md:w-4 md:h-4" />
                 Resume
               </button>
               <a href="#connect">
-                <button className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2.5 rounded-full font-bold text-xs hover:bg-gray-300 transition-colors font-dot">
+                <button className="flex items-center gap-2 bg-gray-200 text-black px-4 py-2 md:px-6 md:py-2.5 rounded-full font-bold text-[10px] md:text-xs hover:bg-gray-300 transition-colors font-dot">
                   Contact Me
                 </button>
               </a>
             </motion.div>
           </div>
 
-          <div className="flex-1 w-full max-w-sm z-10">
+          <div className="w-28 md:flex-1 md:w-full max-w-xs z-10 flex-shrink-0">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}
-              className="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-gray-100"
+              className="relative aspect-[3/4] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden bg-gray-100"
             >
               <img 
-                src="pfp.jpg" 
+                src="./public/pfp.jpg" 
                 alt="Portrait" 
                 className="w-full h-full object-cover grayscale contrast-[1.2] brightness-105"
               />
@@ -311,9 +294,9 @@ const App: React.FC = () => {
       </Section>
 
       {/* 2. SKILLS */}
-      <section id="skills" className="w-full py-24 flex flex-col justify-center items-center">
-        <div className="max-w-7xl mx-auto px-6 w-full text-center mb-6">
-            <p className="font-dot text-sm text-gray-400 tracking-widest uppercase">Tech Stack</p>
+      <section id="skills" className="w-full py-4 lg:py-24 flex flex-col justify-center items-center">
+        <div className="max-w-5xl mx-auto px-6 w-full text-center mb-4 lg:mb-6">
+            <p className="font-dot text-[10px] lg:text-sm text-gray-400 tracking-widest uppercase">Tech Stack</p>
         </div>
         <SkillsMarquee skills={techStack} />
       </section>
@@ -408,7 +391,7 @@ const App: React.FC = () => {
       </Section>
 
       {/* 6. CONNECT SECTION */}
-      <section id="connect" className="w-full px-6 py-24 max-w-7xl mx-auto text-center">
+      <section id="connect" className="w-full px-6 py-24 max-w-5xl mx-auto text-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -423,43 +406,58 @@ const App: React.FC = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full relative overflow-hidden bg-[#050505]/95 backdrop-blur-3xl backdrop-saturate-150 border-t border-white/5 mt-12">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-900/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-900/10 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+      <footer className="w-full bg-black text-white pt-16 pb-32 md:pb-16 border-t border-white/10 mt-12">
+        {/* CHANGED: max-w-5xl -> w-[80%] mx-auto (for exactly 10% margin on each side) */}
+        <div className="w-[90%] lg:w-[80%] mx-auto px-0">
+            <div className="flex flex-col md:flex-row justify-between gap-12 mb-16">
+                
+                {/* Left Side: Bio & Status */}
+                <div className="space-y-6 max-w-sm">
+                    <div className="text-2xl font-bold tracking-tight font-dot">SPIDEY</div>
 
-        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-12 md:py-16">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-             
-             {/* Left: Contact Action */}
-             <div className="flex flex-col md:flex-row items-center gap-6">
-               <button className="flex items-center gap-3 bg-black text-white border border-gray-700 px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform shadow-lg shadow-white/5 font-dot">
-                  <Mail size={18} />
-                  Send Email
-               </button>
-               <div className="flex gap-4">
-                  <a href="#" className="p-3 bg-white/5 border border-white/10 rounded-full hover:scale-110 transition-transform cursor-pointer shadow-sm text-gray-400 hover:text-white backdrop-blur-sm">
-                    <Github size={20} />
-                  </a>
-                  <a href="#" className="p-3 bg-white/5 border border-white/10 rounded-full hover:scale-110 transition-transform cursor-pointer shadow-sm text-gray-400 hover:text-blue-400 backdrop-blur-sm">
-                    <Linkedin size={20} />
-                  </a>
-                  <a href="#" className="p-3 bg-white/5 border border-white/10 rounded-full hover:scale-110 transition-transform cursor-pointer shadow-sm text-gray-400 hover:text-blue-500 backdrop-blur-sm">
-                    <Facebook size={20} />
-                  </a>
-                  <a href="#" className="p-3 bg-white/5 border border-white/10 rounded-full hover:scale-110 transition-transform cursor-pointer shadow-sm text-gray-400 hover:text-pink-500 backdrop-blur-sm">
-                    <Instagram size={20} />
-                  </a>
-               </div>
-             </div>
+                    <p className="text-gray-400 text-sm leading-relaxed font-dot">
+                        I'm Safal - an ML/AI Engineer & Researcher.
+                        Building intelligent systems and exploring the boundaries of machine learning.
+                    </p>
 
-             {/* Right: Copyright & Location */}
-             <div className="text-center md:text-right text-sm text-gray-500 font-dot">
-                <p className="font-bold text-gray-300 mb-1">Safal N. Shrestha</p>
-                <p>Kathmandu, Nepal</p>
-                <p className="mt-4 text-xs opacity-80">© 2026. All rights reserved.</p>
-             </div>
-          </div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 w-fit">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-green-400 font-dot">
+                            Available for work
+                        </span>
+                    </div>
+                </div>
+
+                {/* Right Side: General Links */}
+                <div>
+                    <h3 className="text-gray-500 text-xs uppercase tracking-widest mb-6 font-dot">General</h3>
+                    <div className="flex flex-col gap-4 text-sm text-gray-300 font-dot">
+                        {["About", "Projects", "Education", "Experience"].map((item) => (
+                            <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-white transition-colors">
+                                {item}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Bottom Bar: Copyright & Socials */}
+            <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p className="text-gray-500 text-xs font-dot text-center md:text-left">
+                    © 2026 Safal N. Shrestha. All rights reserved.
+                </p>
+
+                {/* Socials */}
+                <div className="flex gap-6 text-gray-400">
+                    <a href="#" className="hover:text-white transition-colors"><Github size={20} /></a>
+                    <a href="#" className="hover:text-white transition-colors"><Linkedin size={20} /></a>
+                    <a href="#" className="hover:text-white transition-colors"><Facebook size={20} /></a>
+                    <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
+                </div>
+            </div>
         </div>
       </footer>
 

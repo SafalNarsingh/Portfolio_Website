@@ -1,31 +1,48 @@
-/* Add this single line at the very top */
+/* 1. Tailwind v4 Entry Point */
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Space Mono:ital,wght@0,400;0,700;1,400&display=swap');
+/* 2. Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
-/* Keep the rest of your CSS below */
-html {
-  scroll-behavior: smooth;
-}
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  @apply bg-[#FAFAFA] text-black font-mono selection:bg-black selection:text-white;
+/* 3. Custom Font Definition */
+@font-face {
+  font-family: 'Bitcount Prop Single';
+  /* Ensure this path matches exactly where your file is located */
+  src: url('./assets/fonts/BitCountPropSingle.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Custom Scrollbar */
+/* 4. Global Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    /* FIX: Use standard CSS for the font to avoid build errors */
+    font-family: 'Bitcount Prop Single', monospace;
+
+    /* Use @apply for standard Tailwind colors and selection styles */
+    @apply bg-[#FAFAFA] text-black selection:bg-black selection:text-white;
+  }
+}
+
+/* 5. Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  /* You can use standard colors or @apply if you prefer Tailwind shades */
+  background-color: #ccc; 
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+  background-color: #aaa;
 }
